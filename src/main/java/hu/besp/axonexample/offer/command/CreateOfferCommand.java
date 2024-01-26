@@ -1,14 +1,18 @@
 package hu.besp.axonexample.offer.command;
 
 import hu.besp.axonexample.offer.dto.CreateOfferDTO;
+import hu.besp.axonexample.offer.entity.OfferState;
 import hu.besp.axonexample.offer.entity.OfferType;
 import lombok.Data;
+import org.axonframework.modelling.command.TargetAggregateIdentifier;
 
 import java.math.BigDecimal;
 import java.util.UUID;
 
 @Data
 public class CreateOfferCommand {
+
+    @TargetAggregateIdentifier
     private final String id;
     private final String product;
     private final String userId;

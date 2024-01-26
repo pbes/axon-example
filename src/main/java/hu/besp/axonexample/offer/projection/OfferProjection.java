@@ -2,7 +2,9 @@ package hu.besp.axonexample.offer.projection;
 
 import hu.besp.axonexample.offer.dto.OfferDTO;
 import hu.besp.axonexample.offer.entity.Offer;
+import hu.besp.axonexample.offer.entity.OfferState;
 import hu.besp.axonexample.offer.event.OfferCreatedEvent;
+import hu.besp.axonexample.offer.event.OfferRevokedEvent;
 import hu.besp.axonexample.offer.query.ListAllOffersQuery;
 import hu.besp.axonexample.offer.repository.OfferRepository;
 import org.axonframework.eventhandling.EventHandler;
@@ -28,10 +30,19 @@ public class OfferProjection {
                 offerCreatedEvent.getUserId(),
                 offerCreatedEvent.getProductId(),
                 offerCreatedEvent.getType(),
+                offerCreatedEvent.getState(),
                 offerCreatedEvent.getQuantity(),
                 offerCreatedEvent.getPrice()
         );
         this.offerRepository.save(offerEntity);
+    }
+
+    @EventHandler
+    void delete(OfferRevokedEvent offerRevokedEvent) {
+        this.offerRepository.findById(offerRevokedEvent.getOfferId()).ifPresent(offer -> {
+            offer.setState(OfferState.REVOKED);
+            this.offerRepository.save(offer);
+        });
     }
 
     @QueryHandler
@@ -41,6 +52,7 @@ public class OfferProjection {
                 offer.getUserId(),
                 offer.getProduct(),
                 offer.getType(),
+                offer.getState(),
                 offer.getQuantity(),
                 offer.getPrice()
         )).collect(Collectors.toList());

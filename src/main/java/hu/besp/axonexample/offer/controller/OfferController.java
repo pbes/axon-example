@@ -1,6 +1,7 @@
 package hu.besp.axonexample.offer.controller;
 
 import hu.besp.axonexample.offer.command.CreateOfferCommand;
+import hu.besp.axonexample.offer.command.DeleteOfferCommand;
 import hu.besp.axonexample.offer.dto.CreateOfferDTO;
 import hu.besp.axonexample.offer.dto.OfferDTO;
 import hu.besp.axonexample.offer.query.ListAllOffersQuery;
@@ -27,6 +28,11 @@ public class OfferController {
     @PostMapping()
     public CompletableFuture<Void> createOffer(@RequestBody CreateOfferDTO createOfferDTO) {
         return this.commands.send(new CreateOfferCommand(createOfferDTO));
+    }
+
+    @DeleteMapping("/{id}")
+    public CompletableFuture<Void> deleteOffer(@PathVariable String id) {
+        return this.commands.send(new DeleteOfferCommand(id));
     }
 
     @GetMapping()

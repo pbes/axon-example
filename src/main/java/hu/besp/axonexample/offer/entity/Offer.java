@@ -1,8 +1,8 @@
 package hu.besp.axonexample.offer.entity;
 
-import hu.besp.axonexample.offer.dto.OfferDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 @Table(name = "offers")
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
+@Data
 public class Offer {
 
     @Id
@@ -24,6 +24,9 @@ public class Offer {
 
     @Enumerated(EnumType.STRING)
     private OfferType type;
+
+    @Enumerated(EnumType.STRING)
+    private OfferState state;
 
     private BigDecimal quantity;
 
